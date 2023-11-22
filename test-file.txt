@@ -1,0 +1,4 @@
+http://www.catastro.minhap.es/INSPIRE/CadastralParcels/02/02001-ABENGIBRE/A.ES.SDGC.CP.02001.zip
+http://www.catastro.minhap.es/INSPIRE/CadastralParcels/02/02002-ALATOZ/A.ES.SDGC.CP.02002.zip
+http://www.catastro.minhap.es/INSPIRE/CadastralParcels/02/02004-ALBATANA/A.ES.SDGC.CP.02004.zip
+https://www.catastro.minhap.es/INSPIRE/CadastralParcels/02/02021-CASAS DE JUAN NUÑEZ/A.ES.SDGC.CP.02021.zip
