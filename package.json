@@ -1,17 +1,16 @@
 {
-  "name": "download-extract-zip",
+  "name": "dezipp",
   "version": "1.0.0",
   "description": "Script for downloading and unzipping files",
   "main": "download-and-unzip.js",
+  "bin": "download-and-unzip.js",
   "scripts": {
-    "bundle": "pkg download-and-unzip.js",
+    "bundle": "pkg .",
     "test": "node download-and-unzip.js"
   },
   "dependencies": {
-    "axios": "^1.6.2",
     "commander": "^11.1.0",
-    "decompress": "^4.2.1",
-    "yauzl": "^2.10.0"
+    "decompress": "^4.2.1"
   },
   "devDependencies": {
     "pkg": "^5.8.1"
@@ -21,13 +20,7 @@
   },
   "pkg": {
     "scripts": "download-and-unzip.js",
-    "targets": [
-      "node18-linux-x64",
-      "node18-win-x64",
-      "node18-macos-x64"
-    ],
-    "outputPath": "dist",
-    "outputName": "dezipp"
+    "outputPath": "bin"
   },
   "repository": {
     "type": "git",

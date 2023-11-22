@@ -2,12 +2,14 @@
 
 const fs = require("fs");
 const path = require("path");
-const axios = require("axios");
+// const fetch = require("node-fetch");
 const { promisify } = require("util");
+const { pipeline } = require("stream");
 const decompress = require("decompress");
 const { program } = require("commander");
 
 const readFileAsync = promisify(fs.readFile);
+const streamPipeline = promisify(pipeline);
 
 function isURL(str) {
   return /^https?:\/\//.test(str);
@@ -15,11 +17,7 @@ function isURL(str) {
 
 async function downloadFile(url, destination, fileName) {
   try {
-    const response = await axios({
-      method: "GET",
-      url: url,
-      responseType: "stream",
-    });
+    const response = await fetch(url);
 
     const filePath = path.join(destination, fileName);
 
@@ -29,13 +27,7 @@ async function downloadFile(url, destination, fileName) {
       return;
     }
 
-    const writer = fs.createWriteStream(filePath);
-    response.data.pipe(writer);
-
-    return new Promise((resolve, reject) => {
-      writer.on("finish", resolve);
-      writer.on("error", reject);
-    });
+    return await streamPipeline(response.body, fs.createWriteStream(filePath));
   } catch (error) {
     console.error(`Error downloading ${url}: ${error.message}`);
     throw error; // Rethrow the error to indicate failure
@@ -57,10 +49,14 @@ async function unzipFile(zipPath, fileName, extractPath) {
 async function processFileList(source, downloadPath, startPointer) {
   try {
     console.log(`Getting list from: ${source}`);
+    let fileContent = "";
 
-    const fileContent = isURL(source)
-      ? (await axios.get(source)).data
-      : await readFileAsync(source, "utf-8");
+    if (isURL(source)) {
+      const sourceResponse = await fetch(source);
+      fileContent = await sourceResponse.text();
+    } else {
+      fileContent = await readFileAsync(source, "utf-8");
+    }
 
     const fileUrls = fileContent.split("\n").filter(Boolean);
 
@@ -74,8 +70,12 @@ async function processFileList(source, downloadPath, startPointer) {
       `Preparing ${fileUrls.length - startPointer} files to download...`
     );
 
-    const zipFilePath = `${downloadPath}/savedFiles`;
-    const extractedFilesPath = `${downloadPath}/extractedFiles`;
+    const zipFilePath = path.join(process.cwd(), downloadPath, "savedFiles");
+    const extractedFilesPath = path.join(
+      process.cwd(),
+      downloadPath,
+      "extractedFiles"
+    );
 
     fs.mkdirSync(zipFilePath, { recursive: true });
     fs.mkdirSync(extractedFilesPath, { recursive: true });

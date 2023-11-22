@@ -14,12 +14,14 @@ This script downloads and extracts files from a list of URLs.
 
 2. Open a terminal or command prompt.
 
-3. Navigate to the directory where downloaded/cloned - script is located in `dist`.
+3. Navigate to the directory where downloaded/cloned - script is located in `bin`.
 
-4. Run the script:
+4. Run the script based on your operating system:
 
 ```bash
-dezipp -s [link to files] -d [destination on disk] -p [starting line pointer]
+dezipp-macos -s [link to files] -d [destination on disk] -p [starting line pointer]
+dezipp-linux -s [link to files] -d [destination on disk] -p [starting line pointer]
+dezipp-win.exe -s [link to files] -d [destination on disk] -p [starting line pointer]
 ```
 
 Replace [link to files] with the link to the file containing file URLs, [destination on disk] with the destination directory, and [starting line pointer] with the starting line pointer (optional) to skip lines if needed.
@@ -27,7 +29,8 @@ Replace [link to files] with the link to the file containing file URLs, [destina
 ## Example
 
 ```bash
-dezipp -s https://example.com/file_urls.txt -d /path/to/destination -p 0
+./dezipp-macos -s test-file.txt -d /extract -p 0
+./dezipp-macos -s https://raw.githubusercontent.com/maciejkwas/download-extract-zip/main/test-file.txt -d /extract -p 0
 ```
 
 ## Options
